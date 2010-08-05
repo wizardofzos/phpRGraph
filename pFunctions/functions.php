@@ -1,5 +1,31 @@
 <?php     // These are the functions for
           // creating RGraph graphs
+function addBasicLIne($pID, $xVal, $yVal){
+    $i = rand(1,10000);
+    print('<script>' . "\n");
+    print('    var data' . $i .' = [' . $yVal . '];' . "\n");
+    print('    var line' . $i .' = new RGraph.Line("' . $pID . '", data'.$i.');' . "\n");
+    print('    line'.$i.'.Set("chart.labels",['. $xVal . ']);' . "\n");
+    print('    line'.$i.'.Draw();' . "\n");
+    print('</script>');
+}
+
+function basicLine($pID, $xVal, $yVal){
+    // Your basic line graph :)
+    print('<canvas id="' . $pID . '" width="1024" height="575">[No canvas support]</canvas>' . "\n\n");
+    addBasicLIne($pID, $xVal, $yVal);
+}
+
+function drawBasicLine($id, $input){   
+    foreach($input as $x => $y){
+      // greate teh graph
+      $yVal .= $c . php2js($y);
+      $xVal .= $c . php2js($x);
+      $c     = ',';
+    }
+     
+    basicLine($id,$xVal,$yVal);
+}
 
 function stackedBar($graphID, $values, $categories, $keys, $theme){
   // $values should be an array of value-arrays
@@ -58,6 +84,7 @@ function printArray($array){
       $o .= $c . printArray($item);
     }
     else{
+        $item = php2js($item);
         $o .= $c . $item;
     }
     $c = ',';
@@ -68,6 +95,14 @@ function printArray($array){
   return $o;
 }
 
+function php2js($var){
+  //  converts a php-var to javascript-safe-code
+  // or tries to :)
+  if(!is_numeric($var) && $var != 'true' && $var != 'false')  
+    // quote all literals :)
+    $var = "'" . $var . "'";  
+  return $var;  
+}
 //  end of Functions File
 ?>
 
